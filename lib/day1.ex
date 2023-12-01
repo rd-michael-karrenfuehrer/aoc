@@ -9,9 +9,7 @@ defmodule Day1 do
     |> IO.puts()
   end
 
-  def solve(input), do: solve(input, &noreplace/1)
-
-  def solve(input, apply) do
+  def solve(input, apply \\ &noreplace/1) do
     String.split(input, "\n")
     |> Enum.map(fn line -> apply.(line) end)
     |> Enum.map(fn line -> findNumbers(line) end)
