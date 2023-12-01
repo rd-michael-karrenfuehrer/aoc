@@ -31,9 +31,9 @@ defmodule Day1 do
     |> sumLines(apply)
   end
 
-  def sumLines([], apply) when is_function(apply), do: 0
+  defp sumLines([], apply) when is_function(apply), do: 0
 
-  def sumLines([head | tail], apply) when is_function(apply) do
+  defp sumLines([head | tail], apply) when is_function(apply) do
     sum =
       apply.(head)
       |> findNumbers()
@@ -42,18 +42,18 @@ defmodule Day1 do
     sum + sumLines(tail, apply)
   end
 
-  def findNumbers(input) when is_bitstring(input) do
+  defp findNumbers(input) when is_bitstring(input) do
     Regex.scan(~r/\d/, input)
     |> List.flatten()
     |> parseNumbers()
   end
 
-  def parseNumbers([]), do: []
-  def parseNumbers([head | tail]), do: [String.to_integer(head) | parseNumbers(tail)]
+  defp parseNumbers([]), do: []
+  defp parseNumbers([head | tail]), do: [String.to_integer(head) | parseNumbers(tail)]
 
-  def sumFirstAndLast([]), do: 0
-  def sumFirstAndLast([head | []]), do: head * 10 + head
-  def sumFirstAndLast([head | tail]), do: head * 10 + List.last(tail)
+  defp sumFirstAndLast([]), do: 0
+  defp sumFirstAndLast([head | []]), do: head * 10 + head
+  defp sumFirstAndLast([head | tail]), do: head * 10 + List.last(tail)
 end
 
 Day1.solve()
