@@ -9,17 +9,16 @@ defmodule Day1 do
     |> IO.puts()
   end
 
-  def solve(input, apply \\ &noreplace/1) do
+  def solve(input, apply \\ &noreplace/1) when is_bitstring(input) and is_function(apply) do
     String.split(input, "\n")
     |> Enum.map(fn line -> apply.(line) end)
     |> Enum.map(fn line -> findNumbers(line) end)
-    |> Enum.map(fn line -> sumFirstAndLast(line) end)
-    |> Enum.sum()
+    |> Enum.reduce(0, fn line, acc -> acc + sumFirstAndLast(line) end)
   end
 
-  def noreplace(input), do: input
+  def noreplace(input) when is_bitstring(input), do: input
 
-  def replace(input) do
+  def replace(input) when is_bitstring(input) do
     String.replace(input, "one", "one1one")
     |> String.replace("two", "two2two")
     |> String.replace("three", "three3three")
@@ -31,9 +30,10 @@ defmodule Day1 do
     |> String.replace("nine", "nine9nine")
   end
 
-  def findNumbers(input) do
+  def findNumbers(input) when is_bitstring(input) do
     Regex.scan(~r/\d/, input)
-    |> Enum.map(fn match -> String.to_integer(hd(match)) end)
+    |> Enum.map(fn match -> hd(match) end)
+    |> Enum.map(fn match -> String.to_integer(match) end)
   end
 
   def sumFirstAndLast([]), do: 0
