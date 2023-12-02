@@ -36,20 +36,9 @@ defmodule Day2 do
       |> hd()
       |> String.to_integer()
 
-    redCubes =
-      Regex.scan(~r/\d+(?=\sred)/, head)
-      |> List.flatten()
-      |> Enum.map(&String.to_integer(&1))
-
-    greenCubes =
-      Regex.scan(~r/\d+(?=\sgreen)/, head)
-      |> List.flatten()
-      |> Enum.map(&String.to_integer(&1))
-
-    blueCubes =
-      Regex.scan(~r/\d+(?=\sblue)/, head)
-      |> List.flatten()
-      |> Enum.map(&String.to_integer(&1))
+    redCubes = findNumbers(~r/\d+(?=\sred)/, head)
+    greenCubes = findNumbers(~r/\d+(?=\sgreen)/, head)
+    blueCubes = findNumbers(~r/\d+(?=\sblue)/, head)
 
     game = %Game{
       id: gameId,
@@ -61,6 +50,12 @@ defmodule Day2 do
     }
 
     [game | parseLines(tail)]
+  end
+
+  defp findNumbers(regex, input) when is_bitstring(input) do
+    Regex.scan(regex, input)
+    |> List.flatten()
+    |> Enum.map(&String.to_integer(&1))
   end
 
   defp sumPossibleGameIds([], cubes) when is_struct(cubes, Cubes), do: 0
@@ -84,8 +79,7 @@ defmodule Day2 do
   defp powerMaxCubes([], _), do: 0
 
   defp powerMaxCubes([head | tail], cubes) when is_struct(cubes, Cubes) do
-    head.cubes.red.max * head.cubes.green.max * head.cubes.blue.max +
-      powerMaxCubes(tail, cubes)
+    head.cubes.red.max * head.cubes.green.max * head.cubes.blue.max + powerMaxCubes(tail, cubes)
   end
 end
 
