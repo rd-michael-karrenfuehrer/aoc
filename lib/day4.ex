@@ -68,13 +68,13 @@ defmodule Day4 do
   defp addCopiesForEachCard(cards, 0, _), do: cards
 
   defp addCopiesForEachCard(cards, times, amount) do
-    addCopieInNextCards(cards, amount)
+    addCopyInNextCards(cards, amount)
     |> addCopiesForEachCard(times - 1, amount)
   end
 
-  defp addCopieInNextCards(cards, 0), do: cards
+  defp addCopyInNextCards(cards, 0), do: cards
 
-  defp addCopieInNextCards(cards, times) do
+  defp addCopyInNextCards(cards, times) do
     card =
       Enum.at(cards, times - 1)
       |> Map.update(
@@ -85,7 +85,7 @@ defmodule Day4 do
 
     cards
     |> List.replace_at(times - 1, card)
-    |> addCopieInNextCards(times - 1)
+    |> addCopyInNextCards(times - 1)
   end
 end
 
