@@ -52,6 +52,6 @@ defmodule Day6 do
   end
 end
 
-File.read!("day6_input.txt")
-|> Day6.solve2()
-|> IO.inspect()
+# File.read!("day6_input.txt")
+# |> Day6.solve2()
+# |> IO.inspect()

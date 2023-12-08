@@ -15,7 +15,7 @@ defmodule Day7 do
     "A" => 13
   }
 
-    @ratingsWithJoker %{@ratings | "J" => 0}
+  @ratingsWithJoker %{@ratings | "J" => 0}
 
   def solve1(input) do
     lines =
@@ -24,22 +24,23 @@ defmodule Day7 do
       |> Enum.map(&parseHand/1)
       |> Enum.sort(&sortByCards/2)
       |> Enum.with_index()
-      
-      
-      lines = lines
+
+    lines =
+      lines
       |> Enum.map(fn {card, index} ->
         %{
           position: index + 1,
           points: card.bid * (index + 1)
-          } |> Map.merge(card)
-
+        }
+        |> Map.merge(card)
       end)
-      lines = lines      
-      |>  IO.inspect(limit: :infinity)
 
+    lines =
       lines
-      |> Enum.reduce(0, fn (card, acc) -> acc + card.points
-      end)
+      |> IO.inspect(limit: :infinity)
+
+    lines
+    |> Enum.reduce(0, fn card, acc -> acc + card.points end)
   end
 
   def solve2(input) do
@@ -49,21 +50,23 @@ defmodule Day7 do
       |> Enum.map(&parseHand/1)
       |> Enum.sort(&sortByCardsiWithJoker/2)
       |> Enum.with_index()
-      
-      
-      lines = lines
+
+    lines =
+      lines
       |> Enum.map(fn {card, index} ->
         %{
           position: index + 1,
           points: card.bid * (index + 1)
-          } |> Map.merge(card)
-
+        }
+        |> Map.merge(card)
       end)
-      lines = lines      
-      |>  IO.inspect(limit: :infinity)
 
+    lines =
       lines
-      |> Enum.reduce(0, fn (card, acc) -> acc + card.points end)
+      |> IO.inspect(limit: :infinity)
+
+    lines
+    |> Enum.reduce(0, fn card, acc -> acc + card.points end)
   end
 
   defp sortByCards(hand, otherHand) do
@@ -76,32 +79,41 @@ defmodule Day7 do
 
   defp sortByCardsiWithJoker(hand, otherHand) do
     cond do
-      hand.raitingWithJoker == otherHand.raitingWithJoker -> hand.cardSumWithJoker< otherHand.cardSumWithJoker
-      hand.raitingWithJoker > otherHand.raitingWithJoker -> true
-      hand.raitingWithJoker < otherHand.raitingWithJoker -> false
+      hand.raitingWithJoker == otherHand.raitingWithJoker ->
+        hand.cardSumWithJoker < otherHand.cardSumWithJoker
+
+      hand.raitingWithJoker > otherHand.raitingWithJoker ->
+        true
+
+      hand.raitingWithJoker < otherHand.raitingWithJoker ->
+        false
     end
   end
 
   defp parseHand(line) do
     match = Regex.named_captures(~r/(?<cards>(\w+))\s+(?<bid>(\d+))/m, line)
     cards = match["cards"] |> String.split("", trim: true)
-    joker = cards|> Enum.filter(fn card -> card == "J" end)|> Enum.count()
+    joker = cards |> Enum.filter(fn card -> card == "J" end) |> Enum.count()
     cardsWithoutJoker = cards |> Enum.filter(fn card -> card != "J" end)
 
     %{
       original: cards,
-      cardsWithoutJoker: cardsWithoutJoker, 
-      joker: joker, 
-      cardSum: cards 
+      cardsWithoutJoker: cardsWithoutJoker,
+      joker: joker,
+      cardSum:
+        cards
         |> Enum.reduce(0, fn card, acc -> acc * 100 + Map.get(@ratings, card) end),
-      cardSumWithJoker: cards 
+      cardSumWithJoker:
+        cards
         |> Enum.reduce(0, fn card, acc -> acc * 100 + Map.get(@ratingsWithJoker, card) end),
-      raiting: cards
+      raiting:
+        cards
         |> Enum.frequencies()
         |> Enum.map(fn {_, v} -> v end)
         |> Enum.sort(:desc)
         |> resolveRaiting(),
-      raitingWithJoker: cardsWithoutJoker
+      raitingWithJoker:
+        cardsWithoutJoker
         |> Enum.frequencies()
         |> Enum.map(fn {_, v} -> v end)
         |> Enum.sort(:desc)
@@ -113,7 +125,7 @@ defmodule Day7 do
   defp resolveRaiting(frequencies, joker) do
     case frequencies do
       [] -> [5]
-      _ -> [hd(frequencies) + joker  | tl(frequencies)]
+      _ -> [hd(frequencies) + joker | tl(frequencies)]
     end
     |> resolveRaiting()
   end
@@ -129,9 +141,8 @@ defmodule Day7 do
       [1, 1, 1, 1, 1] -> 7
     end
   end
-
 end
 
-File.read!("day7_input.txt")
-|> Day7.solve2()
-|> IO.inspect()
+# File.read!("day7_input.txt")
+# |> Day7.solve2()
+# |> IO.inspect()

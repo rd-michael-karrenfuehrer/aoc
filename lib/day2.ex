@@ -83,4 +83,4 @@ defmodule Day2 do
   end
 end
 
-Day2.solve()
+# Day2.solve()

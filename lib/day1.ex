@@ -56,4 +56,4 @@ defmodule Day1 do
   defp sumFirstAndLast([head | tail]), do: head * 10 + List.last(tail)
 end
 
-Day1.solve()
+# Day1.solve()

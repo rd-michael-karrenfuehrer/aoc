@@ -89,6 +89,6 @@ defmodule Day4 do
   end
 end
 
-File.read!("day4_input.txt")
-|> Day4.solve2()
-|> IO.inspect(limit: :infinity)
+# File.read!("day4_input.txt")
+# |> Day4.solve2()
+# |> IO.inspect(limit: :infinity)
